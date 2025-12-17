@@ -6,3 +6,13 @@ Här kan du dokumentera ditt projekt.
 - Projektets mål och funktionalitet
 - Instruktioner för hur man startar servern och klientapplikationen
 - Exempel på API-anrop
+Har gjort två API-anrop på första dagen.
+- GET http://localhost:8080/annonser 
+- POST http://localhost:8080/annonser   
+  
+1. GET-anrop, hämtar alla annonser. Då det inte fanns något sparat
+så fick jag [] som svar första gången. Efter första POST dök information upp.
+2. POST-anrop, lägger till annonser. Då hamnar de i minneslistan och kan sen
+visas vid nästa GET-anrop.
+
+
