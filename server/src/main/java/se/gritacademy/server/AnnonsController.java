@@ -36,7 +36,7 @@ public class AnnonsController {
         return null;
     }
 
-    @PostMapping //Anger att detta är en POST-endpoint
+    @PostMapping //Anger att detta är en POST-endpoint.
     //(@RequestBody Annons nyAnnons) säger åt Spring Boot att läsa
     // JSON från klientens request och omvandla till ett Annons-objekt.
     public Annons createAnnons(@RequestBody Annons nyAnnons) {
@@ -52,10 +52,19 @@ public class AnnonsController {
         for(Annons annons : annonser) {
             if(annons.getId() == id) {
                 annons.setPris(uppdateradAnnons.getPris());
+                annons.setAmnesrad(uppdateradAnnons.getAmnesrad());
+                annons.setBeskrivning(uppdateradAnnons.getBeskrivning());
+                annons.setSaljare(uppdateradAnnons.getSaljare());
                 return annons;
             }
         }
         return null;
+    }
+    //Delete-endpoint som GET använder vi enbart PathVariable
+    //pga att vi hämtar id:et direkt från URL:en.
+    @DeleteMapping("/{id}")
+    public void deleteAnnons(@PathVariable int id) {
+        annonser.removeIf(annons -> annons.getId() == id);
     }
 
 

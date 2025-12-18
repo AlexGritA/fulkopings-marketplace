@@ -2,9 +2,14 @@ package se.gritacademy.server;
 
 public class Saljare {
 
-    String namn;
-    String kontakt;
+    private String namn;
+    private String epost;
+    private int telefon;
 
+    //Konstruktor
+    public Saljare() {}
+
+    //Getter och setters
     public String getNamn(){
         return namn;
     }
@@ -12,11 +17,20 @@ public class Saljare {
         this.namn = namn;
     }
 
-    public String getKontakt(){
-        return kontakt;
+    public String getEpost(){
+        return epost;
     }
-    public void setKontakt(String kontakt){
-        this.kontakt = kontakt;
+
+    public void setEpost(String epost){
+        this.epost = epost;
+    }
+
+    public int getTelefon(){
+        return telefon;
+    }
+
+    public void setTelefon(int telefon){
+        this.telefon = telefon;
     }
 }
 
