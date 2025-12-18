@@ -1,5 +1,7 @@
 package se.gritacademy.server;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,27 +29,33 @@ public class AnnonsController {
     //PathVariable tar värdet från URL:en och
     // skickar det till metoden som en variabel och inte som text.
     @GetMapping("/{id}")
-    public Annons getAnnonsById(@PathVariable int id) {
+    public ResponseEntity<Annons> getAnnonsById(@PathVariable int id) {
         for(Annons annons : annonser) {
             if(annons.getId() == id) {
-                return annons;
+                return ResponseEntity.ok(annons); //200 OK
             }
         }
-        return null;
+        return ResponseEntity.notFound().build(); //404 Not Found
     }
 
     @PostMapping //Anger att detta är en POST-endpoint.
     //(@RequestBody Annons nyAnnons) säger åt Spring Boot att läsa
     // JSON från klientens request och omvandla till ett Annons-objekt.
-    public Annons createAnnons(@RequestBody Annons nyAnnons) {
-        annonser.add(nyAnnons); //Lägger till i minneslistan
-        return nyAnnons; //returnerar annonsen som svar
+    public ResponseEntity<Annons> createAnnons(@RequestBody Annons nyAnnons) {
+        for (Annons annons : annonser) {
+            if (annons.getId() == nyAnnons.getId()) {
+                // 409 Conflict om id redan finns
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+        }
+        annonser.add(nyAnnons);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nyAnnons);
     }
 
     //Anger att detta är en PUT-endpoint, för uppdatering av
     //annonser i annonslistan,
     @PutMapping("/{id}")
-    public Annons updateAnnonsPris(@PathVariable int id, @RequestBody
+    public ResponseEntity<Annons> updateAnnonsPris(@PathVariable int id, @RequestBody
                                    Annons uppdateradAnnons) {
         for(Annons annons : annonser) {
             if(annons.getId() == id) {
@@ -55,17 +63,24 @@ public class AnnonsController {
                 annons.setAmnesrad(uppdateradAnnons.getAmnesrad());
                 annons.setBeskrivning(uppdateradAnnons.getBeskrivning());
                 annons.setSaljare(uppdateradAnnons.getSaljare());
-                return annons;
+                return ResponseEntity.ok(annons); //200 OK
             }
         }
-        return null;
+        return ResponseEntity.notFound().build(); //404 Not Found
     }
     //Delete-endpoint som GET använder vi enbart PathVariable
     //pga att vi hämtar id:et direkt från URL:en.
     @DeleteMapping("/{id}")
-    public void deleteAnnons(@PathVariable int id) {
-        annonser.removeIf(annons -> annons.getId() == id);
+    public ResponseEntity<Void> deleteAnnons(@PathVariable int id) {
+        for (Annons annons : annonser) {
+            if (annons.getId() == id) {
+                annonser.remove(annons);
+                return ResponseEntity.noContent().build(); // 204 No Content
+            }
+        }
+        return ResponseEntity.notFound().build(); // 404 Not Found
     }
+
 
 
 }
