@@ -15,4 +15,11 @@ så fick jag [] som svar första gången. Efter första POST dök information up
 2. POST-anrop, lägger till annonser. Då hamnar de i minneslistan och kan sen
 visas vid nästa GET-anrop.
 
+Har gjort alla 4 API-anrop idag på andra dagen. Allt funkar.
+- GET
+- POST
+- PUT
+- DELETE.
 
+3. PUT-anrop ändrar i befintlig annons. 
+4. DELETE-anrop tar bort befitnlig annons. 
