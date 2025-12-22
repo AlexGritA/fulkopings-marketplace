@@ -60,9 +60,6 @@ public class AnnonsController {
         for(Annons annons : annonser) {
             if(annons.getId() == id) {
                 annons.setPris(uppdateradAnnons.getPris());
-                annons.setAmnesrad(uppdateradAnnons.getAmnesrad());
-                annons.setBeskrivning(uppdateradAnnons.getBeskrivning());
-                annons.setSaljare(uppdateradAnnons.getSaljare());
                 return ResponseEntity.ok(annons); //200 OK
             }
         }
