@@ -42,8 +42,8 @@ public class AnnonsController {
     //(@RequestBody Annons nyAnnons) säger åt Spring Boot att läsa
     // JSON från klientens request och omvandla till ett Annons-objekt.
     public ResponseEntity<Annons> createAnnons(@RequestBody Annons nyAnnons) {
-        for (Annons annons : annonser) {
-            if (annons.getId() == nyAnnons.getId()) {
+        for(Annons annons : annonser) {
+            if(annons.getId() == nyAnnons.getId()) {
                 // 409 Conflict om id redan finns
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
@@ -59,23 +59,31 @@ public class AnnonsController {
                                    Annons uppdateradAnnons) {
         for(Annons annons : annonser) {
             if(annons.getId() == id) {
+
+                if(annons.getPinkod() != uppdateradAnnons.getPinkod()) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();//403
+                }
                 annons.setPris(uppdateradAnnons.getPris());
-                return ResponseEntity.ok(annons); //200 OK
+                return ResponseEntity.ok(annons);//200 OK
             }
         }
-        return ResponseEntity.notFound().build(); //404 Not Found
+        return ResponseEntity.notFound().build();//404 Not Found
     }
     //Delete-endpoint som GET använder vi enbart PathVariable
     //pga att vi hämtar id:et direkt från URL:en.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAnnons(@PathVariable int id) {
-        for (Annons annons : annonser) {
-            if (annons.getId() == id) {
+        for(Annons annons : annonser) {
+            if(annons.getId() == id) {
+
+                if(annons.getPinkod() != annons.pinkod) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();//403
+                }
                 annonser.remove(annons);
-                return ResponseEntity.noContent().build(); // 204 No Content
+                return ResponseEntity.noContent().build();//204 No Content
             }
         }
-        return ResponseEntity.notFound().build(); // 404 Not Found
+        return ResponseEntity.notFound().build();//404 Not Found
     }
 
 

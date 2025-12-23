@@ -65,9 +65,9 @@ public class AnnonsClient {
     }
 
     //Raderar en annons baserat på id
-    static void deleteAnnonsById(int id) {
+    static void deleteAnnonsById(int id,  int pinkod) {
         try {
-            URL url = new URL("http://localhost:8080/annonser/" + id); //URL med id
+            URL url = new URL("http://localhost:8080/annonser/" + id + "?pinkod=" + pinkod); //URL med id
             HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Öppnar anslutning
             connection.setRequestMethod("DELETE"); //DELETE-metod
 

@@ -11,6 +11,7 @@ public class Main {
         System.out.println("Klienten startad!");
 
         boolean running = true;
+        int pinkod;
 
         while (running) {
             //Meny
@@ -56,7 +57,7 @@ public class Main {
                     System.out.print("Säljare telefon: ");
                     String telefon = scanner.nextLine();
                     System.out.print("Pinkod: ");
-                    int pinkod = scanner.nextInt();
+                    pinkod = scanner.nextInt();
                     scanner.nextLine();
 
                     //Skapar JSON manuellt
@@ -80,14 +81,19 @@ public class Main {
                     System.out.print("Ange id för annons som ska ändras: ");
                     int updateId = scanner.nextInt();
                     scanner.nextLine();
+
+                    System.out.println("Ange pinkod: ");
+                    pinkod = scanner.nextInt();
+                    scanner.nextLine();
+
                     System.out.print("Nytt pris: ");
                     double newPris = scanner.nextDouble();
                     scanner.nextLine();
 
-                    //Skapar JSON med nytt pris (behöver minst id och pris)
+                    //Skapar JSON med nytt pris, genom id, pris och pinkod
                     String jsonUpdate = "{"
-                            + "\"id\":" + updateId + ","
-                            + "\"pris\":" + newPris
+                            + "\"pris\":" + newPris + ","
+                            + "\"pinkod\":" + pinkod
                             + "}";
                     updateAnnons(updateId, jsonUpdate); //Skickar till servern
                     break;
@@ -96,7 +102,12 @@ public class Main {
                     System.out.print("Ange id för annons som ska raderas: ");
                     int deleteId = scanner.nextInt();
                     scanner.nextLine();
-                    deleteAnnonsById(deleteId); //Skickar DELETE
+
+                    System.out.println("Ange pinkod: ");
+                    pinkod = scanner.nextInt();
+                    scanner.nextLine();
+
+                    deleteAnnonsById(deleteId, pinkod); //Skickar DELETE
                     break;
 
                 case 0: //Avsluta

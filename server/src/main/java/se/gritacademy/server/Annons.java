@@ -1,5 +1,7 @@
 package se.gritacademy.server;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Annons {
 
     long id;
@@ -7,6 +9,7 @@ public class Annons {
     String beskrivning;
     double pris;
     Saljare saljare; // (Objekt)
+    @JsonIgnore//Pinkod ska ej synas för klienter
     int pinkod;
 
     public long getId() {
