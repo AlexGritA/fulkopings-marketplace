@@ -27,13 +27,15 @@ public class AnnonsController {
     public AnnonsController() {
     }
 
-    @GetMapping //Anger att detta är en GET-endpoint.
+    //GET /annonser
+    //Returnerar alla annonser
+    @GetMapping //GET-endpoint.
     public List<Annons> getAllAnnonser() {
         return annonser;
     }
 
-    //PathVariable tar värdet från URL:en och
-    // skickar det till metoden som en variabel och inte som text.
+    //GET /annonser/{id}
+    //Hämtar en annons med specifikt id
     @GetMapping("/{id}")
     public ResponseEntity<Annons> getAnnonsById(@PathVariable int id) {
         for(Annons annons : annonser) {
@@ -43,14 +45,13 @@ public class AnnonsController {
         }
         return ResponseEntity.notFound().build(); //404 Not Found
     }
-
+    //POST /annonser
+    //Skapar en ny annons
     @PostMapping //Anger att detta är en POST-endpoint.
-    //(@RequestBody Annons nyAnnons) säger åt Spring Boot att läsa
-    // JSON från klientens "request" och omvandla till ett Annons-objekt.
     public ResponseEntity<Annons> createAnnons(@RequestBody Annons nyAnnons) {
         for(Annons annons : annonser) {
             if(annons.getId() == nyAnnons.getId()) {
-                // 409 Conflict om id redan finns
+                //409 Conflict om id redan finns
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
         }
@@ -58,8 +59,8 @@ public class AnnonsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nyAnnons);
     }
 
-    //Anger att detta är en PUT-endpoint, för uppdatering av
-    //annonser i annonslistan,
+    //PUT /annonser/{id}
+    //Uppdaterar endast priset
     @PutMapping("/{id}")
     public ResponseEntity<String> updateAnnonsPris(@PathVariable int id, @RequestBody Annons uppdateradAnnons) {
         for (Annons annons : annonser) {
@@ -79,10 +80,8 @@ public class AnnonsController {
                 .body("Ingen annons med det id:t hittades."); // 404 Not Found
     }
 
-    //Delete-endpoint som GET använder enbart PathVariable
-    //pga att vi hämtar id:et direkt från URL:en. RequestParam???
-    //Kan inte ta bort ett element från en lista medan du itererar
-    // med en for-each-loop, kör med vanlig for-loop
+    //DELETE /annonser/{id}?pinkod=1234
+    //Tar bort annons om pinkod stämmer
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAnnons(
             @PathVariable int id, @RequestParam int pinkod) {

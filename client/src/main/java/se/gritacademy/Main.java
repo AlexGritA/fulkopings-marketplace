@@ -4,15 +4,15 @@ import java.util.Scanner;
 
 import static se.gritacademy.AnnonsClient.*;
 
+//Main-metoden kör klientprogrammet.
 public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in); //Läser in från konsolen
-        System.out.println("Klienten startad!");
-
         boolean running = true;
         int pinkod;
 
+        //Loopar tills användaren avslutar
         while (running) {
             //Meny
             System.out.println("== Fulköpings-annonser ==");
@@ -26,7 +26,7 @@ public class Main {
 
             int choice = scanner.nextInt(); //Läser val
             scanner.nextLine(); //Rensar ny rad
-
+            //switch hanterar användarens val
             switch (choice) {
                 case 1: //Visa alla annonser
                     getAllAnnonser();
@@ -60,7 +60,7 @@ public class Main {
                     pinkod = scanner.nextInt();
                     scanner.nextLine();
 
-                    //JSON
+                    // Byggt JSON-sträng för annonsen som ska skickas till servern
                     String jsonNyAnnons = "{"
                             + "\"id\":" + newId + ","
                             + "\"amnesrad\":\"" + amnesrad + "\","

@@ -8,10 +8,13 @@ public class Annons {
     String amnesrad;
     String beskrivning;
     double pris;
+    //Säljare är ett eget objekt
     Saljare saljare; // (Objekt)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)//Pinkod kan skickas in – men visas aldrig ut från serven
+    //Pinkod kan skickas in – men visas aldrig ut från serven
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     int pinkod;
 
+    //Getters och setters används av Spring
     public long getId() {
         return id;
     }

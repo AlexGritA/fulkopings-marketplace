@@ -4,6 +4,15 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+// AnnonsClient:
+// Skickar HTTP-anrop till servern
+// Använder HttpURLConnection
+
+// GET – hämtar alla annonser
+// POST – skapar ny annons
+// PUT – uppdaterar pris
+// DELETE – tar bort annons
+
 public class AnnonsClient {
 
     //Hämtar alla annonser från servern
