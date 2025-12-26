@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de7ae47c-d577-43ab-9ca8-5f7851b22aab" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/gritacademy/AnnonsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/gritacademy/AnnonsClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/se/gritacademy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/se/gritacademy/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/se/gritacademy/server/Annons.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/se/gritacademy/server/Annons.java" afterDir="false" />

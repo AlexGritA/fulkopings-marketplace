@@ -36,7 +36,7 @@ public class Main {
                     System.out.print("Ange id: ");
                     int getId = scanner.nextInt();
                     scanner.nextLine();
-                    getAnnonsById(getId);
+                    getAnnons(getId);
                     break;
 
                 case 3: //Skapa ny annons
@@ -60,7 +60,7 @@ public class Main {
                     pinkod = scanner.nextInt();
                     scanner.nextLine();
 
-                    //Skapar JSON manuellt
+                    //JSON
                     String jsonNyAnnons = "{"
                             + "\"id\":" + newId + ","
                             + "\"amnesrad\":\"" + amnesrad + "\","
@@ -107,7 +107,7 @@ public class Main {
                     pinkod = scanner.nextInt();
                     scanner.nextLine();
 
-                    deleteAnnonsById(deleteId, pinkod); //Skickar DELETE
+                    deleteAnnons(deleteId, pinkod); //Skickar DELETE
                     break;
 
                 case 0: //Avsluta

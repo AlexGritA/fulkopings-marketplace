@@ -1,6 +1,6 @@
 package se.gritacademy.server;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Annons {
 
@@ -9,7 +9,7 @@ public class Annons {
     String beskrivning;
     double pris;
     Saljare saljare; // (Objekt)
-    @JsonIgnore//Pinkod ska ej synas för klienter
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)//Pinkod kan skickas in – men visas aldrig ut från serven
     int pinkod;
 
     public long getId() {

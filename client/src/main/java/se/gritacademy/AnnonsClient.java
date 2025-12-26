@@ -30,7 +30,7 @@ public class AnnonsClient {
     }
 
     //Hämtar en annons baserat på id
-    static void getAnnonsById(int id) {
+    static void getAnnons(int id) {
         try {
             URL url = new URL("http://localhost:8080/annonser/" + id); //URL med id
             HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Öppnar anslutning
@@ -65,21 +65,47 @@ public class AnnonsClient {
     }
 
     //Raderar en annons baserat på id
-    static void deleteAnnonsById(int id,  int pinkod) {
+    static void deleteAnnons(int id, int pinkod) {
         try {
-            URL url = new URL("http://localhost:8080/annonser/" + id + "?pinkod=" + pinkod); //URL med id
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Öppnar anslutning
-            connection.setRequestMethod("DELETE"); //DELETE-metod
+            // Skapa URL med id och pinkod som query-param
+            URL url = new URL("http://localhost:8080/annonser/" + id + "?pinkod=" + pinkod);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
 
-            int responseCode = connection.getResponseCode(); //Kontrollerar svar
-            if (responseCode == 204) {
-                System.out.println("Annons raderad!"); //204 No Content
-            } else if (responseCode == 404) {
-                System.out.println("Ingen annons med det id:t hittades."); //404 Not Found
+            // Hämta response code
+            int responseCode = connection.getResponseCode();
+
+            // Stream för att läsa meddelandet från servern
+            BufferedReader reader;
+            if (responseCode >= 400) { // Felkoder (4xx, 5xx)
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            } else { // 2xx OK
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            }
+
+            // Läs hela servermeddelandet
+            String line;
+            StringBuilder response = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            // Skriv ut servermeddelandet
+            if (response.length() > 0) {
+                System.out.println(response.toString());
+            } else {
+                // Om servern skickar 204 No Content
+                if (responseCode == 204) {
+                    System.out.println("Annons raderad!");
+                } else {
+                    System.out.println("Okänt svar, kod: " + responseCode);
+                }
             }
 
         } catch (Exception e) {
-            System.out.println("Kunde inte radera annons"); //Felhantering
+            System.out.println("Kunde inte radera annons");
+            e.printStackTrace();
         }
     }
 
@@ -106,12 +132,30 @@ public class AnnonsClient {
                     System.out.println("Annons med samma id finns redan."); //409 Conflict
                 }
             } else if (method.equals("PUT")) {
-                if (responseCode == 200) {
-                    System.out.println("Annons uppdaterad!"); //200 OK
-                } else if (responseCode == 404) {
-                    System.out.println("Ingen annons med det id:t hittades."); //404 Not Found
+
+                BufferedReader reader;
+                if (responseCode >= 400) {
+                    reader = new BufferedReader(
+                            new InputStreamReader(connection.getErrorStream()));
+                } else {
+                    reader = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()));
+                }
+
+                String line;
+                StringBuilder response = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                if (response.length() > 0) {
+                    System.out.println(response.toString());
+                } else {
+                    System.out.println("Svar från servern, kod: " + responseCode);
                 }
             }
+
 
         } catch (Exception e) {
             System.out.println("Kunde inte skicka annons till servern"); //Felhantering
