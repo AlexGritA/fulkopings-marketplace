@@ -1,8 +1,12 @@
 package se.gritacademy;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 // AnnonsClient:
 // Skickar HTTP-anrop till servern
@@ -15,54 +19,49 @@ import java.net.URL;
 
 public class AnnonsClient {
 
+    //För att kunna konvertera JSON-sträng till Java-objekt
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     //Hämtar alla annonser från servern
-    static void getAllAnnonser() {
+    // Hämtar alla annonser från servern och returnerar dem som en lista av Annons-objekt
+    static List<Annons> getAllAnnonser() {
         try {
-            URL url = new URL("http://localhost:8080/annonser"); //Skapar URL
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Öppnar anslutning
-            connection.setRequestMethod("GET"); //Använder GET-metod
+            URL url = new URL("http://localhost:8080/annonser");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()) //Läser svar från servern
-            );
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line); //Skriver ut varje rad
-            }
-
-            reader.close(); //Stänger läsaren
+            String json = readResponse(connection);
+            return mapper.readValue(json, new TypeReference<List<Annons>>() {});
 
         } catch (Exception e) {
-            System.out.println("Kunde inte hämta annonser"); //Felhantering
+            System.out.println("Kunde inte hämta annonser");
+            return null;
         }
     }
 
     //Hämtar en annons baserat på id
-    static void getAnnons(int id) {
+    // Hämtar en annons från servern och returnerar den som ett Annons-objekt
+    static Annons getAnnons(int id) {
         try {
-            URL url = new URL("http://localhost:8080/annonser/" + id); //URL med id
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Öppnar anslutning
-            connection.setRequestMethod("GET"); //GET-metod
+            URL url = new URL("http://localhost:8080/annonser/" + id);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
-            int responseCode = connection.getResponseCode(); //Kontrollerar svar
-            if (responseCode == 200) {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream())
-                );
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line); //Skriver ut rad
-                }
-                reader.close();
-            } else if (responseCode == 404) {
-                System.out.println("Ingen annons med det id:t hittades."); //404 Not Found
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 404) {
+                System.out.println("Ingen annons med det id:t hittades.");
+                return null;
             }
 
+            String json = readResponse(connection);
+            return mapper.readValue(json, Annons.class);
+
         } catch (Exception e) {
-            System.out.println("Kunde inte hämta annons"); //Felhantering
+            System.out.println("Kunde inte hämta annons");
+            return null;
         }
     }
+
 
     //Skapar en ny annons på servern
     static void createAnnons(String jsonAnnons) {
@@ -169,5 +168,17 @@ public class AnnonsClient {
         } catch (Exception e) {
             System.out.println("Kunde inte skicka annons till servern"); //Felhantering
         }
+
     }
+    //Läser HTTP-svaret och returnerar det som en sträng
+    private static String readResponse(HttpURLConnection connection) throws Exception {
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) sb.append(line);
+        reader.close();
+        return sb.toString();
+    }
+
 }

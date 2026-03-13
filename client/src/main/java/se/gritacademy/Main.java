@@ -1,5 +1,6 @@
 package se.gritacademy;
 
+import java.util.List;
 import java.util.Scanner;
 
 import static se.gritacademy.AnnonsClient.*;
@@ -28,15 +29,35 @@ public class Main {
             scanner.nextLine(); //Rensar ny rad
             //switch hanterar användarens val
             switch (choice) {
-                case 1: //Visa alla annonser
-                    getAllAnnonser();
+                //Visa alla annonser
+                case 1:
+                    List<Annons> alla = getAllAnnonser();
+                    if (alla != null && !alla.isEmpty()) {
+                        for (Annons a : alla) {
+                            System.out.println(a.getId() + " - " + a.getAmnesrad());
+                        }
+                    } else {
+                        System.out.println("Inga annonser hittades.");
+                    }
                     break;
 
-                case 2: //Visa annons med id
+                //Visa annons med id
+                case 2:
                     System.out.print("Ange id: ");
                     int getId = scanner.nextInt();
                     scanner.nextLine();
-                    getAnnons(getId);
+                    Annons annons = getAnnons(getId);
+                    if (annons != null) {
+                        System.out.println("ID: " + annons.getId());
+                        System.out.println("Ämnesrad: " + annons.getAmnesrad());
+                        System.out.println("Beskrivning: " + annons.getBeskrivning());
+                        System.out.println("Pris: " + annons.getPris());
+                        if (annons.getSaljare() != null) {
+                            System.out.println("Säljare: " + annons.getSaljare().getNamn());
+                            System.out.println("E-post: " + annons.getSaljare().getEpost());
+                            System.out.println("Telefon: " + annons.getSaljare().getTelefon());
+                        }
+                    }
                     break;
 
                 case 3: //Skapa ny annons
