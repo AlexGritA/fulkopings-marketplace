@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,9 +30,14 @@ public class AnnonsController {
     //GET /annonser
     //Returnerar alla annonser
     @GetMapping //GET-endpoint.
-    public List<Annons> getAllAnnonser() {
-        return repository.getAll();
-    }
+    public List<Annons> getAllAnnonser(@RequestParam(required = false) String sortering) {
+        List<Annons> annonser = new ArrayList<>(repository.getAll());
+
+        if ("pris".equals(sortering)) {
+            annonser.sort((a, b) -> Double.compare(a.getPris(), b.getPris()));
+        }
+    return annonser;
+        }
 
     //GET /annonser/{id}
     //Hämtar en annons med specifikt id

@@ -31,7 +31,16 @@ public class Main {
             switch (choice) {
                 //Visa alla annonser
                 case 1:
-                    List<Annons> alla = getAllAnnonser();
+                    System.out.println("Sortera efter:");
+                    System.out.println("1. Datum (skapningsordning)");
+                    System.out.println("2. Pris");
+                    System.out.print("Välj: ");
+                    int sorteringsVal = scanner.nextInt();
+                    scanner.nextLine();
+
+                    String sortering = sorteringsVal == 2 ? "pris" : "datum";
+
+                    List<Annons> alla = getAllAnnonser(sortering);
                     if (alla != null && !alla.isEmpty()) {
                         for (Annons a : alla) {
                             System.out.println(a.getId() + " - " + a.getAmnesrad());

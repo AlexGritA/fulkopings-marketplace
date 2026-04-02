@@ -24,9 +24,9 @@ public class AnnonsClient {
 
     //Hämtar alla annonser från servern
     // Hämtar alla annonser från servern och returnerar dem som en lista av Annons-objekt
-    static List<Annons> getAllAnnonser() {
+    static List<Annons> getAllAnnonser(String sortering) {
         try {
-            URL url = new URL("http://localhost:8080/annonser");
+            URL url = new URL("http://localhost:8080/annonser?sortering=" + sortering);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
